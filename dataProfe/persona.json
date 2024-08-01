@@ -1,0 +1,336 @@
+[{
+  "_id": {
+    "$oid": "64c42a88c6d1f6e24315c128"
+  },
+  "nif": "12345678A",
+  "nombre": "Juan",
+  "apellido1": "Pérez",
+  "apellido2": "Gómez",
+  "ciudad": "Madrid",
+  "dirrecion": "Calle Mayor, 10",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600123456
+    },
+    {
+      "tipo": "fijo",
+      "numero": 911234567
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1990-05-15T00:00:00.000Z"
+  },
+  "sexo": "H",
+  "tipo": "profesor",
+  "asignatura": [
+    {
+      "$oid": "60d5f484f1f93c30d8d0f111"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e2"
+  },
+  "nif": "12345678A",
+  "nombre": "Juan",
+  "apellido1": "Pérez",
+  "apellido2": "García",
+  "ciudad": "Madrid",
+  "dirrecion": "Calle Mayor, 1",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600123456
+    },
+    {
+      "tipo": "fijo",
+      "numero": 911234567
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1990-01-15T00:00:00.000Z"
+  },
+  "sexo": "H",
+  "tipo": "alumno",
+  "asignatura": []
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e3"
+  },
+  "nif": "23456789B",
+  "nombre": "María",
+  "apellido1": "López",
+  "apellido2": "Martínez",
+  "ciudad": "Barcelona",
+  "dirrecion": "Avenida Diagonal, 50",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600234567
+    },
+    {
+      "tipo": "fijo",
+      "numero": 932345678
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1985-02-20T00:00:00.000Z"
+  },
+  "sexo": "M",
+  "tipo": "profesor",
+  "asignatura": [
+    {
+      "$oid": "64c88303adbeae001e70b7f1"
+    },
+    {
+      "$oid": "64c88303adbeae001e70b7f2"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e4"
+  },
+  "nif": "34567890C",
+  "nombre": "Carlos",
+  "apellido1": "Sánchez",
+  "apellido2": "Fernández",
+  "ciudad": "Valencia",
+  "dirrecion": "Calle Colón, 3",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600345678
+    },
+    {
+      "tipo": "fijo",
+      "numero": 963456789
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1995-03-25T00:00:00.000Z"
+  },
+  "sexo": "H",
+  "tipo": "alumno",
+  "asignatura": []
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e5"
+  },
+  "nif": "45678901D",
+  "nombre": "Laura",
+  "apellido1": "González",
+  "apellido2": "Ruiz",
+  "ciudad": "Sevilla",
+  "dirrecion": "Calle Sierpes, 7",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600456789
+    },
+    {
+      "tipo": "fijo",
+      "numero": 954567890
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1988-04-30T00:00:00.000Z"
+  },
+  "sexo": "M",
+  "tipo": "profesor",
+  "asignatura": [
+    {
+      "$oid": "64c88303adbeae001e70b7f3"
+    },
+    {
+      "$oid": "64c88303adbeae001e70b7f4"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e6"
+  },
+  "nif": "56789012E",
+  "nombre": "David",
+  "apellido1": "Martínez",
+  "apellido2": "Hernández",
+  "ciudad": "Málaga",
+  "dirrecion": "Paseo del Parque, 5",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600567890
+    },
+    {
+      "tipo": "fijo",
+      "numero": 952678901
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1992-05-10T00:00:00.000Z"
+  },
+  "sexo": "H",
+  "tipo": "alumno",
+  "asignatura": []
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e7"
+  },
+  "nif": "67890123F",
+  "nombre": "Sofía",
+  "apellido1": "Jiménez",
+  "apellido2": "Díaz",
+  "ciudad": "Zaragoza",
+  "dirrecion": "Plaza del Pilar, 8",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600678901
+    },
+    {
+      "tipo": "fijo",
+      "numero": 976789012
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1994-06-15T00:00:00.000Z"
+  },
+  "sexo": "M",
+  "tipo": "profesor",
+  "asignatura": [
+    {
+      "$oid": "64c88303adbeae001e70b7f5"
+    },
+    {
+      "$oid": "64c88303adbeae001e70b7f6"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e8"
+  },
+  "nif": "78901234G",
+  "nombre": "Jorge",
+  "apellido1": "Romero",
+  "apellido2": "Torres",
+  "ciudad": "Bilbao",
+  "dirrecion": "Gran Vía, 10",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600789012
+    },
+    {
+      "tipo": "fijo",
+      "numero": 944890123
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1993-07-20T00:00:00.000Z"
+  },
+  "sexo": "H",
+  "tipo": "alumno",
+  "asignatura": []
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7e9"
+  },
+  "nif": "89012345H",
+  "nombre": "Elena",
+  "apellido1": "Gil",
+  "apellido2": "Molina",
+  "ciudad": "Alicante",
+  "dirrecion": "Explanada de España, 12",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600890123
+    },
+    {
+      "tipo": "fijo",
+      "numero": 965901234
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1987-08-25T00:00:00.000Z"
+  },
+  "sexo": "M",
+  "tipo": "profesor",
+  "asignatura": [
+    {
+      "$oid": "64c88303adbeae001e70b7f7"
+    },
+    {
+      "$oid": "64c88303adbeae001e70b7f8"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7ea"
+  },
+  "nif": "90123456I",
+  "nombre": "Luis",
+  "apellido1": "Navarro",
+  "apellido2": "Santos",
+  "ciudad": "Córdoba",
+  "dirrecion": "Calle Cruz Conde, 14",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600901234
+    },
+    {
+      "tipo": "fijo",
+      "numero": 957012345
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1991-09-30T00:00:00.000Z"
+  },
+  "sexo": "H",
+  "tipo": "alumno",
+  "asignatura": []
+},
+{
+  "_id": {
+    "$oid": "64c88303adbeae001e70b7eb"
+  },
+  "nif": "01234567J",
+  "nombre": "Marta",
+  "apellido1": "Ortiz",
+  "apellido2": "Iglesias",
+  "ciudad": "Granada",
+  "dirrecion": "Calle Reyes Católicos, 16",
+  "telefono": [
+    {
+      "tipo": "celular",
+      "numero": 600123567
+    },
+    {
+      "tipo": "fijo",
+      "numero": 958123456
+    }
+  ],
+  "fecha_nacimiento": {
+    "$date": "1990-10-10T00:00:00.000Z"
+  },
+  "sexo": "M",
+  "tipo": "profesor",
+  "asignatura": [
+    {
+      "$oid": "64c88303adbeae001e70b7f9"
+    },
+    {
+      "$oid": "64c88303adbeae001e70b7fa"
+    }
+  ]
+}]

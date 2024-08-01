@@ -2,3 +2,7 @@
 
 2. creacion de las validaciones de mis tablas de la base de datos nosql
 
+
+
+
+
