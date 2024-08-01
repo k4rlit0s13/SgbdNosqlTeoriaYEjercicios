@@ -1,20 +1,20 @@
 ### 1.Consultas sobre una tabla
 
 1. Lista el nombre de todos los productos que hay en la tabla `producto`.
-   ```javascript
    
-   ```
+  select nombre from producto order by asc
+  db.producto.find()
+
 2. Lista los nombres y los precios de todos los productos de la tabla `producto`.
 
-   ```javascript
-   
-   ```
+  
+ 
 
 3. Lista todas las columnas de la tabla `producto`.
 
-   ```javascript
    
-   ```
+   
+  
 4. Lista el nombre de los productos, el precio en euros y el precio en dólares estadounidenses (USD).
 
    ```javascript
@@ -71,7 +71,6 @@
    ```
 15. Lista los nombres de los productos ordenados en primer lugar por el nombre de forma ascendente y en segundo lugar por el precio de forma descendente.
 
-   ```javascript
    
    ```
 16. Devuelve una lista con las 5 primeras filas de la tabla `fabricante`.
