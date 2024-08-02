@@ -92,37 +92,37 @@
 
     db.producto.find({id_fabricante:2},{nombre:1, _id:0}).toArray()
 
-21. Lista el nombre de los productos que tienen un precio menor o igual a 120€.
+--21. Lista el nombre de los productos que tienen un precio menor o igual a 120€.
 
+    db.producto.find({precio:{$lte:120}},{}).sort({precio:-1}).toArray()
+
+--22. Lista el nombre de los productos que tienen un precio mayor o igual a 400€.
    
+    db.producto.find({precio:{$gte:400}},{}).sort({precio:1}).toArray()
 
-22. Lista el nombre de los productos que tienen un precio mayor o igual a 400€.
+--23. Lista el nombre de los productos que no tienen un precio mayor o igual a 400€.
    
+    db.producto.find({precio:{$lt:400}},{nombre:1,precio:1,_id:0}).sort({nombre:1}).toArray()
 
-
-23. Lista el nombre de los productos que **no tienen** un precio mayor o igual a 400€.
+--24. Lista todos los productos que tengan un precio entre 80€ y 300€. Sin utilizar el operador `BETWEEN`.
    
+    db.producto.find({$expr:{$and:[{$gte:["$precio", 80]},{$lte:["$precio", 300]}]}},{_id:0,id_fabricante:0}).sort({precio:1}).toArray()
 
-
-24. Lista todos los productos que tengan un precio entre 80€ y 300€. Sin utilizar el operador `BETWEEN`.
+--25. Lista todos los productos que tengan un precio entre 60€ y 200€. Utilizando el operador `BETWEEN`
    
+    db.producto.find({$expr:{$and:[{$gte:["$precio", 60]},{$lte:["$precio", 200]}]}},{_id:0,id_fabricante:0}).sort({precio:1}).toArray()
 
-
-25. Lista todos los productos que tengan un precio entre 60€ y 200€. Utilizando el operador `BETWEEN`
+--26. Lista todos los productos que tengan un precio mayor que 200€ y que el identificador de fabricante sea igual a 6.
    
+    db.producto.aggregate([{$match:{precio:{$gt:200},id_fabricante:{$eq:6}}}])
 
+--27. Lista todos los productos donde el identificador de fabricante sea 1, 3 o 5. Sin utilizar el operador `IN`. 
 
-26. Lista todos los productos que tengan un precio mayor que 200€ y que el identificador de fabricante sea igual a 6.
+    db.producto.find({$or:[{id_fabricante:1},{id_fabricante:3},{id_fabricante:5}]},{_id:0}).sort({id_fabricante:1}).toArray()
+
+--28. Lista todos los productos donde el identificador de fabricante sea 1, 3 o 5. Utilizando el operador `IN`.
    
-
-
-27. Lista todos los productos donde el identificador de fabricante sea 1, 3 o 5. Sin utilizar el operador `IN`. 
-
-
-
-28. Lista todos los productos donde el identificador de fabricante sea 1, 3 o 5. Utilizando el operador `IN`.
-   
-
+    db.producto.find({id_fabricante:{$in:[1,3,5]}},{_id:0}).sort({ id_fabricante:1}).toArray()
 
 29. Lista el nombre y el precio de los productos en céntimos (Habrá que multiplicar por 100 el valor del precio). Cree un alias para la columna que contiene el precio que se llame `céntimos`
  
