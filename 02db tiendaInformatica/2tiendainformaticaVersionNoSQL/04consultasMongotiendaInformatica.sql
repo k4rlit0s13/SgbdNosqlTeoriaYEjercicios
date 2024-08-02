@@ -124,35 +124,36 @@
    
     db.producto.find({id_fabricante:{$in:[1,3,5]}},{_id:0}).sort({ id_fabricante:1}).toArray()
 
-29. Lista el nombre y el precio de los productos en céntimos (Habrá que multiplicar por 100 el valor del precio). Cree un alias para la columna que contiene el precio que se llame `céntimos`
+--29. Lista el nombre y el precio de los productos en céntimos (Habrá que multiplicar por 100 el valor del precio). Cree un alias para la columna que contiene el precio que se llame `céntimos`
  
+    db.producto.aggregate([{$project:{nombre:1,centimos:{$multiply:["$precio",100]}}}]).toArray()
 
-
-30. Lista los nombres de los fabricantes cuyo nombre empiece por la letra `S`.
+--30. Lista los nombres de los fabricantes cuyo nombre empiece por la letra `S`.
    
+    db.fabricante.find({nombre:{$regex:/^S/}},{}).sort().toArray()
 
-
-31. Lista los nombres de los fabricantes cuyo nombre termine por la vocal `e`.
+--31. Lista los nombres de los fabricantes cuyo nombre termine por la vocal `e`.
    
+    db.fabricante.find({nombre:{$regex:/e$/}},{})
 
-
-32. Lista los nombres de los fabricantes cuyo nombre contenga el carácter `w`.
+--32. Lista los nombres de los fabricantes cuyo nombre contenga el carácter `w`.
   
+    db.fabricante.find({nombre:{$regex:/w/}},{})
 
-
-33. Lista los nombres de los fabricantes cuyo nombre sea de 4 caracteres.
+--33. Lista los nombres de los fabricantes cuyo nombre sea de 4 caracteres.
    
+    db.fabricante.find({nombre:{$regex:/^.{4}$/}},{nombre:1})
 
-
-34. Devuelve una lista con el nombre de todos los productos que contienen la cadena `Portátil` en el nombre.
+--34. Devuelve una lista con el nombre de todos los productos que contienen la cadena `Portátil` en el nombre.
   
+    db.producto.find({nombre:{$regex:/Portátil.*e/}},{})
+    db.producto.find({nombre:{$regex:/[pP][o0óòôõöøœôoõö][rR][tT][aàáâãäåàáâãäå][tT][i1!íìîïÌÍÎÏlL]/i}},{})
 
-
-35. Devuelve una lista con el nombre de todos los productos que contienen la cadena `Monitor` en el nombre y tienen un precio inferior a 215 €.
+--35. Devuelve una lista con el nombre de todos los productos que contienen la cadena `Monitor` en el nombre y tienen un precio inferior a 215 €.
    
+    db.producto.find({nombre:{$regex:/Monitor.*e/i}},{})
 
+--36. Lista el nombre y el precio de todos los productos que tengan un precio mayor o igual a 180€. Ordene el resultado en primer lugar por el precio (en orden descendente) y en segundo lugar por el nombre (en orden ascendente).
 
-36. Lista el nombre y el precio de todos los productos que tengan un precio mayor o igual a 180€. Ordene el resultado en primer lugar por el precio (en orden descendente) y en segundo lugar por el nombre (en orden ascendente).
+    db.producto.find({precio:{$gte:180}},{_id:0,id_fabricante:0}).sort({precio:-1,nombre:1}).toArray()
 
-
-   

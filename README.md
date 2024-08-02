@@ -27,44 +27,205 @@ ________________________________________________________________________________
 
 Operadores de consulta:
 
-$eq: Compara si un valor es igual a otro.
-$ne: Compara si un valor no es igual a otro.
-$gt: Compara si un valor es mayor que otro.
-$gte: Compara si un valor es mayor o igual que otro.
-$lt: Compara si un valor es menor que otro.
-$lte: Compara si un valor es menor o igual que otro.
-$in: Comprueba si un valor está en un conjunto de valores.
-$nin: Comprueba si un valor no está en un conjunto de valores.
-$exists: Comprueba si un campo existe en un documento.
-$type: Comprueba el tipo de un valor.
+// Operadores de Consulta
 
-Operadores de proyección:
+$eq: Coincide con el valor especificado.
 
-$project: Incluye o excluye campos en los resultados de una consulta.
-$slice: Devuelve una porción de un array.
-$elemMatch: Filtra los elementos de un array que cumplen una condición.
-$meta: Devuelve información de metadatos sobre los resultados de una consulta de texto.
+$ne: Coincide con valores diferentes del especificado.
 
-Operadores de actualización:
+$gt: Coincide con valores mayores que el especificado.
 
-$set: Establece el valor de un campo.
-$unset: Elimina un campo de un documento.
-$inc: Incrementa el valor de un campo numérico.
-$push: Añade un elemento a un array.
-$pull: Elimina elementos de un array que cumplen una condición.
-$addToSet: Añade un elemento a un array si no existe.
+$gte: Coincide con valores mayores o iguales al especificado.
+
+$lt: Coincide con valores menores que el especificado.
+
+$lte: Coincide con valores menores o iguales al especificado.
+
+$in: Coincide con cualquier valor en el array especificado.
+
+$nin: Coincide con valores que no están en el array especificado.
+
+$and: Coincide con documentos que cumplan todas las condiciones 
+especificadas.
+
+$or: Coincide con documentos que cumplan al menos una de las condiciones especificadas.
+
+$nor: Coincide con documentos que no cumplan ninguna de las condiciones especificadas.
+
+$not: Coincide con documentos que no cumplen la condición especificada.
+
+$exists: Coincide con documentos que contienen (o no) el campo especificado.
+
+$type: Coincide con documentos donde el campo tiene el tipo especificado.
+
+$regex: Coincide con documentos cuyo campo cumple con la expresión regular especificada.
+
+$text: Realiza una búsqueda de texto completo en campos indexados.
+
+$geoNear: Realiza una búsqueda geoespacial cercana (requiere un índice geoespacial).
+
+$geoWithin: Coincide con documentos dentro de una geometría geoespacial especificada.
+
+$geoIntersects: Coincide con documentos que intersectan una geometría geoespacial.
+
+$elemMatch: Coincide con documentos donde al menos un elemento del array cumple con la condición especificada.
+
+$expr: Permite usar expresiones de agregación en una consulta.
+
+$jsonSchema: Usa un esquema JSON para validar documentos.
+
+$mod: Coincide con documentos donde el campo dividido por un valor específico da el residuo especificado.
+
+$where: Permite usar JavaScript para consultas más complejas.
+
+$all: Coincide con documentos que contienen todos los elementos especificados en un array.
+
+$size: Coincide con documentos cuyo array tiene un tamaño especificado.
+
+$within: Coincide con documentos dentro de una geometría especificada (utiliza `$geoWithin`).
+
+$near: Coincide con documentos cerca de una ubicación geoespacial específica (utiliza `$geoNear`).
+
+$nearSphere: Coincide con documentos cerca de una ubicación en una esfera geoespacial (utiliza `$geoNear`).
+
+// Operadores de Actualización
+
+$set: Establece el valor de un campo. Si el campo no existe, lo crea.
+
+$unset: Elimina un campo del documento.
+
+$inc: Incrementa el valor de un campo numérico por una cantidad especificada.
+
+$mul: Multiplica el valor de un campo numérico por un factor especificado.
+
+$min: Establece el valor de un campo solo si el valor actual es mayor que el valor especificado.
+
+$max: Establece el valor de un campo solo si el valor actual es menor que el valor especificado.
+
+$currentDate: Establece el valor de un campo a la fecha y hora actuales.
+
+$rename: Cambia el nombre de un campo.
+
+$addToSet: Agrega un valor a un array solo si el valor no está presente.
+
+$pop: Elimina el primer o el último elemento de un array.
+
+$pull: Elimina todos los elementos de un array que coincidan con una condición especificada.
+
+$push: Agrega un elemento al final de un array.
+
+$setOnInsert: Establece un valor solo si el documento es insertado.
+
+$bit: Realiza operaciones bit a bit en un campo numérico.
+
+$mergeObjects: Combina varios documentos en uno solo.
+
+$currentDate: Establece el valor de un campo a la fecha y hora actuales, o solo la fecha o hora.
+
+$rename: Cambia el nombre de un campo.
+
+$setOnInsert: Establece un valor solo si el documento es insertado.
+
+$addToSet: Agrega un valor a un array solo si el valor no está presente.
+
 $pop: Elimina el primer o último elemento de un array.
 
-$or: El operador $or realiza una operación lógica OR en una matriz de expresiones y devuelve documentos que cumplen al menos una de las expresiones. Por ejemplo, puedes usar $or para buscar documentos que cumplan una condición o otra.
+$pull: Elimina todos los elementos de un array que coincidan con una condición especificada.
 
+$push: Agrega un elemento al final de un array.
 
-$in: El operador $in selecciona los documentos donde el valor de un campo se encuentra en una matriz de valores especificada. Por ejemplo, puedes usar $in para buscar documentos cuyo campo tenga uno de los valores especificados en una matriz.
+$bit: Realiza operaciones bit a bit en un campo numérico.
 
+$set: Similar a $addFields, agrega nuevos campos o modifica los existentes.
 
-$not: El operador $not realiza una operación lógica NOT en una expresión y devuelve documentos que no cumplen la expresión. Por ejemplo, puedes usar $not para buscar documentos que no cumplan una condición específica.
+// Operadores de Agregación
 
+$match: Filtra documentos en una etapa de la pipeline de agregación.
 
-$ne: El operador $ne selecciona los documentos donde el valor de un campo no es igual a un valor especificado. Por ejemplo, puedes usar $ne para buscar documentos cuyo campo no sea igual a un valor específico.
+$group: Agrupa documentos por el valor de un campo y realiza operaciones de agregación.
 
+$sort: Ordena documentos por el valor de un campo.
 
-$exists: El operador $exists selecciona los documentos donde el campo especificado existe o no existe. Puedes usar $exists para buscar documentos que tengan un campo específico o que no tengan un campo específico.
+$project: Modifica los campos de los documentos que pasan a la siguiente etapa.
+
+$limit: Limita el número de documentos en la salida.
+
+$skip: Omite un número específico de documentos en la salida.
+
+$unwind: Descompone un array en varios documentos.
+
+$lookup: Realiza una unión entre colecciones.
+
+$addFields: Agrega nuevos campos a los documentos o modifica campos existentes.
+
+$bucket: Agrupa documentos en cubos basados en el rango de un campo.
+
+$bucketAuto: Agrupa documentos en un número automático de cubos basados en la distribución de valores.
+
+$facet: Permite realizar múltiples agregaciones en paralelo.
+
+$replaceRoot: Reemplaza el documento raíz con el documento especificado en un campo.
+
+$merge: Combina los resultados de la agregación con una colección, permitiendo insertar, reemplazar o actualizar documentos.
+
+$sample: Selecciona un número aleatorio de documentos.
+
+$sortByCount: Agrupa documentos por un campo, cuenta los resultados y ordena por el conteo.
+
+$count: Cuenta el número de documentos que pasan una etapa en la pipeline de agregación.
+
+$graphLookup: Realiza una búsqueda recursiva en una colección.
+
+$arrayToObject: Convierte un array de pares clave-valor en un objeto.
+
+$objectToArray: Convierte un objeto en un array de pares clave-valor.
+
+$replaceRoot: Reemplaza el documento raíz con el especificado en un campo.
+
+// Operadores de Evaluación
+
+$cond: Devuelve un valor basado en una condición.
+
+$ifNull: Devuelve un valor alternativo si el valor especificado es null.
+
+$switch: Permite múltiples condiciones en una expresión.
+
+$dateToString: Convierte una fecha en una cadena de texto.
+
+$concat: Concatena múltiples cadenas de texto.
+
+$substr: Extrae una subcadena de una cadena de texto.
+
+$toLower: Convierte una cadena de texto a minúsculas.
+
+$toUpper: Convierte una cadena de texto a mayúsculas.
+
+$trim: Elimina espacios en blanco al principio y al final de una cadena de texto.
+
+$split: Divide una cadena de texto en un array usando un delimitador.
+
+$strcasecmp: Compara dos cadenas de texto de forma insensible a mayúsculas y minúsculas.
+
+$substrBytes: Extrae una subcadena basada en bytes de una cadena de texto.
+
+$substrCP: Extrae una subcadena basada en puntos de código de una cadena de texto.
+
+$literal: Devuelve el valor especificado como un literal en lugar de evaluarlo.
+
+$arrayElemAt: Devuelve el elemento del array en el índice especificado.
+
+$filter: Filtra elementos de un array según una condición.
+
+$map: Aplica una función a cada elemento de un array.
+
+$reduce: Reduce un array a un solo valor utilizando una función de acumulación.
+
+$range: Genera un array de valores numéricos en un rango específico.
+
+$size: Devuelve el tamaño de un array o el número de caracteres de una cadena de texto.
+
+$concatArrays: Concatena dos o más arrays en uno solo.
+
+$zip: Combina dos o más arrays en un array de arrays.
+
+$mergeObjects: Combina varios documentos en uno solo.
