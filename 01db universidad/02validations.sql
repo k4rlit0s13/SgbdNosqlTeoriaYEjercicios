@@ -20,34 +20,34 @@
           description: 'El id debe ser un número entero.'
         },
         nif: {
-          bsonType: 'string',
+          bsonType: '"string"',
           maxLength: 9,
-          description: 'El nif es obligatorio y es tipo string de 9 caracteres.'
+          description: 'El nif es obligatorio y es tipo "string" de 9 caracteres.'
         },
         nombre: {
-          bsonType: 'string',
+          bsonType: '"string"',
           maxLength: 25,
-          description: 'El nombre es obligatorio y es tipo string.'
+          description: 'El nombre es obligatorio y es tipo "string".'
         },
         apellido1: {
-          bsonType: 'string',
+          bsonType: '"string"',
           maxLength: 50,
-          description: 'El apellido1 es obligatorio y es tipo string.'
+          description: 'El apellido1 es obligatorio y es tipo "string".'
         },
         apellido2: {
-          bsonType: 'string',
+          bsonType: '"string"',
           maxLength: 50,
-          description: 'El apellido2 es obligatorio y es tipo string.'
+          description: 'El apellido2 es obligatorio y es tipo "string".'
         },
         ciudad: {
-          bsonType: 'string',
+          bsonType: '"string"',
           maxLength: 25,
-          description: 'La ciudad es obligatoria y es tipo string.'
+          description: 'La ciudad es obligatoria y es tipo "string".'
         },
         direccion: {
-          bsonType: 'string',
+          bsonType: '"string"',
           maxLength: 50,
-          description: 'La direccion es obligatoria y es tipo string.'
+          description: 'La direccion es obligatoria y es tipo "string".'
         },
         telefono: {
           bsonType: 'int',
@@ -59,7 +59,7 @@
           description: 'La fecha de nacimiento es obligatoria y es de tipo date.'
         },
         sexo: {
-          bsonType: 'string',
+          bsonType: '"string"',
           'enum': [
             'hombre',
             'mujer'
@@ -67,7 +67,7 @@
           description: 'El sexo debe ser \'hombre\' o \'mujer\'.'
         },
         tipo: {
-          bsonType: 'string',
+          bsonType: '"string"',
           'enum': [
             'estudiante',
             'profesor'
@@ -113,8 +113,8 @@
         description: 'El _id es obligatorio y de tipo objectId'
       },
       nombre: {
-        bsonType: 'string',
-        description: 'El nombre es obligatorio y de tipo string, un solo nombre'
+        bsonType: '"string"',
+        description: 'El nombre es obligatorio y de tipo "string", un solo nombre'
       }
     },
     additionalProperties: false
@@ -134,8 +134,8 @@
         description: 'El _id es obligatorio y de tipo objectId'
       },
       nombre: {
-        bsonType: 'string',
-        description: 'El nombre es obligatorio y de tipo string, un solo nombre'
+        bsonType: '"string"',
+        description: 'El nombre es obligatorio y de tipo "string", un solo nombre'
       }
     },
     additionalProperties: false
@@ -172,7 +172,7 @@
   }
 }
 
---alumno se matricula aignatura
+--alumno se matricula asignatura
 {
   $jsonSchema: {
     required: [
@@ -198,6 +198,239 @@
         maxLength: 10,
         minLength: 10,
         description: 'El id debe ser un número entero.'
+      }
+    },
+    additionalProperties: false
+  }
+}
+
+
+--________________________________________________________________________________________________________________________________
+
+--Actualizados
+--________________________________________________________________________________________________________________________________
+
+
+--persona
+
+{
+  $jsonSchema: {
+    required: [
+      '_id',
+      'nif',
+      'nombre',
+      'apellido1',
+      'apellido2',
+      'ciudad',
+      'direccion',
+      'telefono',
+      'fecha_nacimiento',
+      'sexo',
+      'tipo_persona'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId',
+        description: 'El _id debe ser un ObjectId.'
+      },
+      nif: {
+        bsonType: 'string',
+        description: 'El nif debe ser de tipo varchar (cadena de texto).'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'El nombre debe ser de tipo varchar (cadena de texto).'
+      },
+      apellido1: {
+        bsonType: 'string',
+        description: 'El primer apellido debe ser de tipo varchar (cadena de texto).'
+      },
+      apellido2: {
+        bsonType: 'string',
+        description: 'El segundo apellido debe ser de tipo varchar (cadena de texto).'
+      },
+      ciudad: {
+        bsonType: 'string',
+        description: 'La ciudad debe ser de tipo varchar (cadena de texto).'
+      },
+      direccion: {
+        bsonType: 'string',
+        description: 'La dirección debe ser de tipo varchar (cadena de texto).'
+      },
+      telefono: {
+        bsonType: 'string',
+        description: 'El teléfono debe ser de tipo varchar (cadena de texto).'
+      },
+      fecha_nacimiento: {
+        bsonType: 'date',
+        description: 'La fecha de nacimiento debe ser de tipo date.'
+      },
+      sexo: {
+        bsonType: 'string',
+        'enum': [
+          'masculino',
+          'femenino'
+        ],
+        description: 'El sexo debe ser de tipo varchar (cadena de texto) y uno de los valores permitidos: masculino, femenino.'
+      },
+      tipo_persona: {
+        bsonType: 'string',
+        'enum': [
+          'alumno',
+          'profesor'
+        ],
+        description: 'El tipo de persona debe ser de tipo varchar (cadena de texto) y uno de los valores permitidos: alumno, profesor.'
+      }
+    },
+    additionalProperties: false
+  }
+}
+
+
+--matricula
+
+{
+  $jsonSchema: {
+    required: [
+      '_id',
+      'id_alumno',
+      'curso',
+      'anyo_inicio',
+      'anyo_final'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId',
+        description: 'El id es de tipo ObjectId.'
+      },
+      id_alumno: {
+        bsonType: 'objectId',
+        description: 'id_alumno es de tipo ObjectId.'
+      },
+      curso: {
+        bsonType: 'int',
+        description: 'El curso debe ser de tipo entero.'
+      },
+      anyo_inicio: {
+        bsonType: 'date',
+        description: 'anyo_inicio debe ser de tipo fecha.'
+      },
+      anyo_final: {
+        bsonType: 'date',
+        description: 'anyo_final debe ser de tipo fecha.'
+      }
+    },
+    additionalProperties: false
+  }
+}
+
+
+--asignatura
+
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'nombre',
+      'id_alumno',
+      'id_profesor',
+      'creditos',
+      'tipo',
+      'cuatrimestre'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId',
+        description: 'El id es de tipo ObjectId.'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'El nombre debe ser una cadena de texto.'
+      },
+      id_alumno: {
+        bsonType: 'objectId',
+        description: 'id_alumno es de tipo ObjectId.'
+      },
+      id_profesor: {
+        bsonType: 'objectId',
+        description: 'id_profesor es de tipo ObjectId.'
+      },
+      creditos: {
+        bsonType: 'int',
+        description: 'El número de créditos debe ser un entero.'
+      },
+      tipo: {
+        bsonType: 'string',
+        'enum': [
+          'a',
+          'b'
+        ],
+        description: 'El tipo debe ser una cadena de texto y uno de los valores permitidos: \'a\' o \'b\'.'
+      },
+      cuatrimestre: {
+        bsonType: 'int',
+        description: 'El cuatrimestre debe ser un entero.'
+      }
+    },
+    additionalProperties: false
+  }
+}
+
+
+--departamento
+
+{
+  $jsonSchema: {
+    required: [
+      '_id',
+      'nombre',
+      'id_persona'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId',
+        description: 'El id debe ser un ObjectId.'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'El nombre debe ser una cadena de texto.'
+      },
+      id_persona: {
+        bsonType: 'objectId',
+        description: 'id_persona debe ser un ObjectId.'
+      }
+    },
+    additionalProperties: false
+  }
+}
+
+--grado
+
+{
+  $jsonSchema: {
+    required: [
+      '_id',
+      'id_estudiante',
+      'id_profesor',
+      'grado'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId',
+        description: 'El id debe ser un ObjectId.'
+      },
+      id_estudiante: {
+        bsonType: 'objectId',
+        description: 'id_estudiante debe ser un ObjectId.'
+      },
+      id_profesor: {
+        bsonType: 'objectId',
+        description: 'id_profesor debe ser un ObjectId.'
+      },
+      grado: {
+        bsonType: 'string',
+        description: 'El grado debe ser una cadena de texto.'
       }
     },
     additionalProperties: false

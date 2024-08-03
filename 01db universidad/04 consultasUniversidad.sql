@@ -43,6 +43,7 @@ db.personas.find({},{nombre:1,apellido:1}).sort({nombre:1}).toArray() --(muestre
 
 
 --EJERCICIOS CONSULTAS 
+
 --1. Devuelve un listado con el primer apellido, segundo apellido y el nombre de todos los alumnos. El listado deberá estar ordenado alfabéticamente de menor a mayor por el primer apellido, segundo apellido y nombre.
 db.personas.find({tipo:"alumno"},{apellido1:1,apellido2:1,nombre:1}).sort({apellido1:-1,apellido2:-1,nombre:-1}).sort().toArray(); --(deme los nombres apellidos de los alumnos)
 
@@ -58,5 +59,32 @@ db.personas.find({tipo: "profesor",telefono:{$elemMatch:{numero:null}},nif:{$reg
 --5. Devuelve el listado de las asignaturas que se imparten en el primer cuatrimestre, en el tercer curso del grado que tiene el identificador `7`.
 db.personas.find({})
 
+
+# 2. Consultas multitabla (Composición interna)
+
+--1. Devuelve un listado con los datos de todas las alumnas que se han matriculado alguna vez en el `Grado en Ciencias Políticas`.
+
+    db.persona.find({tipo_persona: "alumno", grados: { $elemMatch: { grado: "Grado en Ciencias Políticas" } },sexo: "femenino"})
+
+--2. Devuelve un listado con todas las asignaturas ofertadas en el `Grado en Ingeniería Electrónica`.
+
+    db.persona.find({grados:{$elemMatch:{grado:"Grado en Ingeniería Electrónica"}}},{asignaturas:1})
+
+--3. Devuelve un listado de los profesores junto con el nombre del departamento al que están vinculados. El listado debe devolver cuatro columnas, primer apellido, segundo apellido, nombre y nombre del departamento. El resultado estará ordenado alfabéticamente de menor a mayor por los apellidos y el nombre.
+
+    db.departamento.find({},{nombre:1}).sort({nombre:1})
+
+--4. Devuelve un listado con el nombre de las asignaturas, año de inicio y año de fin del curso escolar del alumno con nif `26902806M`.
+
+    db.asignatura.find({},{nombre:1})
+    db.persona.find({nif: "12345678A", _id: ObjectId("641c6b7b8a8d3a8e6c8b4567")},{nombre: 1, _id: 0 })
+
+--5. Devuelve un listado con el nombre de todos los departamentos que tienen profesores que imparten alguna asignatura en el `Grado en Ingeniería Informática (Plan 2015)`.
+
+    db.departamento.find({},{nombre:1}).sort({nombre:1})
+
+--6. Devuelve un listado con todos los alumnos que se han matriculado en alguna asignatura durante el curso escolar 2018/2019.
+
+    db.persona.find({tipo_persona:"alumno",$or:[{"matriculas.curso":2021},{"matriculas.curso":2019}]},{nombre:1,apellido1:1,apellido2:1})
 
 

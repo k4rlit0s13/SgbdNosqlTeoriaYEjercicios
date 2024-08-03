@@ -1,6 +1,4 @@
 
-
-
 ### 1. Consultas sobre una tabla
 
 1. Devuelve un listado con el primer apellido, segundo apellido y el nombre de todos los alumnos. El listado deberá estar ordenado alfabéticamente de menor a mayor por el primer apellido, segundo apellido y nombre.
@@ -12,11 +10,6 @@
 4. Devuelve el listado de profesores que **no** han dado de alta su número de teléfono en la base de datos y además su nif termina en `K`.
 
 5. Devuelve el listado de las asignaturas que se imparten en el primer cuatrimestre, en el tercer curso del grado que tiene el identificador `7`.
-
-
-
-
-
 
 
 
@@ -37,12 +30,6 @@
 
 
 
-
-
-
-
-
-
 ### 3. Consultas multitabla (Composición externa)
 
 Resuelva todas las consultas utilizando las cláusulas `LEFT JOIN` y `RIGHT JOIN`.
@@ -58,11 +45,6 @@ Resuelva todas las consultas utilizando las cláusulas `LEFT JOIN` y `RIGHT JOIN
 5. Devuelve un listado con las asignaturas que no tienen un profesor asignado.
 
 6. Devuelve un listado con todos los departamentos que tienen alguna asignatura que no se haya impartido en ningún curso escolar. El resultado debe mostrar el nombre del departamento y el nombre de la asignatura que no se haya impartido nunca.
-
-
-
-
-
 
 
 
