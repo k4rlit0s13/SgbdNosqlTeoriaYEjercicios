@@ -1,24 +1,150 @@
-### 1. Consultas sobre una tabla
+--GRABARSE LO ESCENCIAL:
+db.persona.find({},{}).sort().toArray()
+
+
+  
+--### 1. Consultas sobre una tabla
 
 --1. Devuelve un listado con el primer apellido, segundo apellido y el nombre de todos los alumnos. El listado deberá estar ordenado alfabéticamente de menor a mayor por el primer apellido, segundo apellido y nombre.
 
 db.persona.find({ tipo_persona: "alumno" },{ _id: 0, nombre: 1, apellido1: 1, apellido2: 1 }).sort({ apellido1: 1, apellido2: 1, nombre: 1 })
 
-2. Averigua el nombre y los dos apellidos de los alumnos que **no** han dado de alta su número de teléfono en la base de datos.
-3. Devuelve el listado de los alumnos que nacieron en `1999`.
-4. Devuelve el listado de profesores que **no** han dado de alta su número de teléfono en la base de datos y además su nif termina en `K`.
-5. Devuelve el listado de las asignaturas que se imparten en el primer cuatrimestre, en el tercer curso del grado que tiene el identificador `7`.
+--2. Averigua el nombre y los dos apellidos de los alumnos que **no** han dado de alta su número de teléfono en la base de datos.
 
-### 2. Consultas multitabla (Composición interna)
+db.persona.find({telefono:{$eq:null},tipo_persona:{$eq:"alumno"}},{_id:0,nombre:1,apellido1:1,apellido2:1}).sort({nombre:1}).toArray()
+  
+--3. Devuelve el listado de los alumnos que nacieron en `1999`.
 
-1. Devuelve un listado con los datos de todas las **alumnas** que se han matriculado alguna vez en el `Grado en Ingeniería Informática (Plan 2015)`.
-2. Devuelve un listado con todas las asignaturas ofertadas en el `Grado en Ingeniería Informática (Plan 2015)`.
-3. Devuelve un listado de los profesores junto con el nombre del departamento al que están vinculados. El listado debe devolver cuatro columnas, primer apellido, segundo apellido, nombre y nombre del departamento. El resultado estará ordenado alfabéticamente de menor a mayor por los apellidos y el nombre.
-4. Devuelve un listado con el nombre de las asignaturas, año de inicio y año de fin del curso escolar del alumno con nif `26902806M`.
-5. Devuelve un listado con el nombre de todos los departamentos que tienen profesores que imparten alguna asignatura en el `Grado en Ingeniería Informática (Plan 2015)`.
-6. Devuelve un listado con todos los alumnos que se han matriculado en alguna asignatura durante el curso escolar 2018/2019.
+db.persona.find({$expr:{$eq:[{$year:"$fecha_nacimiento"},1991]}})
+  
+--4. Devuelve el listado de profesores que **no** han dado de alta su número de teléfono en la base de datos y además su nif termina en `K`.
 
-### 3. Consultas multitabla (Composición externa)
+db.persona.find({telefono:{$eq:null},tipo_persona:{$eq:"profesor"}},{_id:0,nombre:1,apellido1:1,apellido2:1}).sort({nombre:1}).toArray()
+  
+--5. Devuelve el listado de las asignaturas que se imparten en el primer cuatrimestre, en el tercer curso del grado que tiene el identificador `7`.
+
+db.asignatura.find({cuatrimestre:{$eq:1}},{nombre_materia:1,_id:0}).sort({nombre_materia:1}).toArray()
+  
+
+
+  
+  
+--### 2. Consultas multitabla (Composición interna)
+
+--1. Devuelve un listado con los datos de todas las **alumnas** que se han matriculado alguna vez en el `Grado en Ingeniería Informática (Plan 2015)`.
+--PRUEBA:
+db.persona.find({tipo_persona:{$eq:"alumno"},sexo:{$eq:"M"}},{}).sort().toArray()
+--FINAL:
+db.persona.aggregate([
+    {
+        $match: {
+            tipo_persona: "alumno",
+            sexo: "M"
+        }
+    },
+    {
+        $lookup: {
+            from: "grado",
+            localField: "id_grado",
+            foreignField: "_id",
+            as: "grado_info"
+        }
+    },
+    {
+        $unwind: "$grado_info"
+    },
+    {
+        $match: {
+            "grado_info.nombre_grado": "Grado en Ingeniería Informática (Plan 2015)"
+        }
+    }
+]).toArray();
+
+
+--2. Devuelve un listado con todas las asignaturas ofertadas en el `Grado en Ingeniería Informática (Plan 2015)`.
+
+db.asignatura.find({id_grado:4},{_id:0,nombre_materia:1}).sort({nombre_materia:1}).toArray()
+  
+--3. Devuelve un listado de los profesores junto con el nombre del departamento al que están vinculados. El listado debe devolver cuatro columnas, primer apellido, segundo apellido, nombre y nombre del departamento. El resultado estará ordenado alfabéticamente de menor a mayor por los apellidos y el nombre.
+
+db.departamento.aggregate([
+  {
+    $lookup: {
+      from: "persona",
+      localField: "id_persona",
+      foreignField: "_id",
+      as: "persona_info"
+    }
+  },
+  {
+    $unwind: "$persona_info"
+  },
+  {
+    $match: {
+      "persona_info.tipo_persona": "profesor"
+    }
+  }
+])
+  
+--4. Devuelve un listado con el nombre de las asignaturas, año de inicio y año de fin del curso escolar del alumno con nif `26902806M`.
+
+db.persona.aggregate([
+  {
+    $match: {
+      nif: "26902806M"
+    }
+  },
+  {
+    $lookup: {
+      from: "matricula",
+      localField: "_id",
+      foreignField: "id_alumno",
+      as: "matriculas"
+    }
+  },
+  {
+    $unwind: "$matriculas"
+  },
+    {
+    $lookup: {
+      from: "asignatura",
+      localField: "matriculas.id_alumno",
+      foreignField: "_id",
+      as: "asignaturas"
+    }
+    },
+    {
+    $unwind: {
+      path: "$asignaturas",
+      preserveNullAndEmptyArrays: true
+    }
+  },
+    {
+    $project: {
+      _id: 0,
+      nombre:"$nombre",
+      apellido1:"$apellido1",
+      apellido2:"$apellido2",
+      nombre_asignatura: "$asignaturas.nombre_materia",
+      año_inicio: "$matriculas.anyo_inicio",
+      año_fin: "$matriculas.anyo_final",
+      materias:"$matriculas.nombre_materia",
+      curso:"$matriculas.curso"
+    }
+  }
+])
+  
+--5. Devuelve un listado con el nombre de todos los departamentos que tienen profesores que imparten alguna asignatura en el `Grado en Ingeniería Informática (Plan 2015)`.
+
+db.persona.find({},{}).sort().toArray()
+  
+--6. Devuelve un listado con todos los alumnos que se han matriculado en alguna asignatura durante el curso escolar 2018/2019.
+
+
+
+  
+  
+--### 3. Consultas multitabla (Composición externa)
 
 Resuelva todas las consultas utilizando las cláusulas `LEFT JOIN` y `RIGHT JOIN`.
 
