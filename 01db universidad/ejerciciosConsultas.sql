@@ -2,10 +2,7 @@
 
 --1. Devuelve un listado con el primer apellido, segundo apellido y el nombre de todos los alumnos. El listado deberá estar ordenado alfabéticamente de menor a mayor por el primer apellido, segundo apellido y nombre.
 
-
-
-
-
+db.persona.find({ tipo_persona: "alumno" },{ _id: 0, nombre: 1, apellido1: 1, apellido2: 1 }).sort({ apellido1: 1, apellido2: 1, nombre: 1 })
 
 2. Averigua el nombre y los dos apellidos de los alumnos que **no** han dado de alta su número de teléfono en la base de datos.
 3. Devuelve el listado de los alumnos que nacieron en `1999`.
