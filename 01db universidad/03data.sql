@@ -123,54 +123,69 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
 
 --persona
 {
-    "$jsonSchema": {
-        "bsonType": "object",
-        "required": ["nif", "nombre", "apellido1", "ciudad", "direccion", "fecha_nacimiento", "sexo", "tipo_persona"],
-        "properties": {
-            "nif": {
-                "bsonType": "string",
-                "description": "Debe ser un valor único con una longitud de 9 caracteres."
-            },
-            "nombre": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 25 caracteres."
-            },
-            "apellido1": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 50 caracteres."
-            },
-            "apellido2": {
-                "bsonType": "string",
-                "description": "Puede ser una cadena de texto de hasta 50 caracteres."
-            },
-            "ciudad": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 25 caracteres."
-            },
-            "direccion": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 50 caracteres."
-            },
-            "telefono": {
-                "bsonType": "string",
-                "description": "Puede ser un valor de hasta 9 caracteres."
-            },
-            "fecha_nacimiento": {
-                "bsonType": "date",
-                "description": "Debe ser una fecha válida."
-            },
-            "sexo": {
-                "bsonType": "string",
-                "enum": ["H", "M"],
-                "description": "Debe ser uno de los valores: 'H' o 'M'."
-            },
-            "tipo_persona": {
-                "bsonType": "string",
-                "enum": ["profesor", "alumno"],
-                "description": "Debe ser uno de los valores: 'profesor' o 'alumno'."
-            }
-        }
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'nif',
+      'nombre',
+      'apellido1',
+      'ciudad',
+      'direccion',
+      'fecha_nacimiento',
+      'sexo',
+      'tipo_persona'
+    ],
+    properties: {
+      nif: {
+        bsonType: 'string',
+        description: 'Debe ser un valor único con una longitud de 9 caracteres.'
+      },
+      nombre: {
+        bsonType: 'string',
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 25 caracteres.'
+      },
+      apellido1: {
+        bsonType: 'string',
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 50 caracteres.'
+      },
+      apellido2: {
+        bsonType: 'string',
+        description: 'Puede ser una cadena de texto de hasta 50 caracteres.'
+      },
+      ciudad: {
+        bsonType: 'string',
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 25 caracteres.'
+      },
+      direccion: {
+        bsonType: 'string',
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 50 caracteres.'
+      },
+      telefono: {
+        bsonType: ['string', 'null'],
+        description: 'Puede ser un valor de hasta 9 caracteres o null.'
+      },
+      fecha_nacimiento: {
+        bsonType: 'date',
+        description: 'Debe ser una fecha válida.'
+      },
+      sexo: {
+        bsonType: 'string',
+        enum: [
+          'H',
+          'M'
+        ],
+        description: 'Debe ser uno de los valores: \'H\' o \'M\'.'
+      },
+      tipo_persona: {
+        bsonType: 'string',
+        enum: [
+          'profesor',
+          'alumno'
+        ],
+        description: 'Debe ser uno de los valores: \'profesor\' o \'alumno\'.'
+      }
     }
+  }
 }
 
 --matricula
@@ -200,96 +215,118 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
 }
 
 --asignatura
-  {
-    "$jsonSchema": {
-        "bsonType": "object",
-        "required": ["nombre_materia", "id_alumno", "id_profesor", "creditos", "tipo", "cuatrimestre"],
-        "properties": {
-            "nombre_materia": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 100 caracteres."
-            },
-            "id_alumno": {
-                "bsonType": "int",
-                "description": "Debe ser un número entero que referencia un documento en la colección persona."
-            },
-            "id_profesor": {
-                "bsonType": "int",
-                "description": "Debe ser un número entero que referencia un documento en la colección persona."
-            },
-            "creditos": {
-                "bsonType": "double",
-                "description": "Debe ser un número decimal positivo."
-            },
-            "tipo": {
-                "bsonType": "string",
-                "enum": ["básica", "obligatoria", "optativa"],
-                "description": "Debe ser uno de los valores: 'básica', 'obligatoria' o 'optativa'."
-            },
-            "cuatrimestre": {
-                "bsonType": "int",
-                "description": "Debe ser un número entero positivo que indica el cuatrimestre."
-            }
-        }
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'nombre_materia',
+      'id_alumno',
+      'id_profesor',
+      'creditos',
+      'tipo',
+      'cuatrimestre'
+    ],
+    properties: {
+      nombre_materia: {
+        bsonType: 'string',
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 100 caracteres.',
+        maxLength: 100
+      },
+      id_alumno: {
+        bsonType: 'int',
+        description: 'Debe ser un número entero que referencia un documento en la colección persona.'
+      },
+      id_profesor: {
+        bsonType: 'int',
+        description: 'Debe ser un número entero que referencia un documento en la colección persona.'
+      },
+      creditos: {
+        bsonType: ['double', 'int'],  // Permitir tanto double como int
+        description: 'Debe ser un número decimal o entero positivo.',
+        minimum: 0
+      },
+      tipo: {
+        bsonType: 'string',
+        'enum': [
+          'básica',
+          'obligatoria',
+          'optativa'
+        ],
+        description: 'Debe ser uno de los valores: \'básica\', \'obligatoria\' o \'optativa\'.'
+      },
+      cuatrimestre: {
+        bsonType: 'int',
+        description: 'Debe ser un número entero positivo que indica el cuatrimestre.',
+        minimum: 1
+      }
     }
+  }
 }
+
+
+
 
 --departamento
-  {
-    "$jsonSchema": {
-        "bsonType": "object",
-        "required": ["id_persona", "nombre"],
-        "properties": {
-            "id_persona": {
-                "bsonType": "int",
-                "description": "Debe ser un número entero que referencia un documento en la colección persona."
-            },
-            "nombre": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 50 caracteres."
-            }
-        }
+{
+  $jsonSchema: {
+    bsonType: "object",
+    required: ["id_persona", "nombre"],
+    properties: {
+      _id: {
+        bsonType: "int",
+        description: "Debe ser un número entero que actúa como identificador único del documento."
+      },
+      id_persona: {
+        bsonType: "int",
+        description: "Debe ser un número entero que referencia a un documento en la colección persona."
+      },
+      nombre: {
+        bsonType: "string",
+        description: "Debe ser una cadena de texto no vacía y no mayor de 50 caracteres."
+      }
     }
+  }
 }
 
+
+
 --grado
-  {
-    "$jsonSchema": {
-        "bsonType": "object",
-        "required": ["id_estudiante", "id_profesor", "grado"],
-        "properties": {
-            "id_estudiante": {
-                "bsonType": "int",
-                "description": "Debe ser un número entero que referencia un documento en la colección persona."
-            },
-            "id_profesor": {
-                "bsonType": "int",
-                "description": "Debe ser un número entero que referencia un documento en la colección persona."
-            },
-            "grado": {
-                "bsonType": "string",
-                "description": "Debe ser una cadena de texto no vacía y no mayor de 100 caracteres."
-            }
-        }
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'id_departamento',
+      'nombre_grado'
+    ],
+    properties: {
+      id_departamento: {
+        bsonType: 'int',
+        description: 'Debe ser un número entero que referencia un documento en la colección departamento.'
+      },
+      nombre_grado: {
+        bsonType: 'string',
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 100 caracteres.'
+      }
     }
+  }
 }
 
 
 --INSERT INTOS
 
---persona
 db.persona.insertMany([
-    { _id: 1, nif: "26902806M", nombre: "Salvador", apellido1: "Sánchez", apellido2: "Pérez", ciudad: "Almería", direccion: "C/ Real del barrio alto", telefono: "950254837", fecha_nacimiento: "1991-03-28", sexo: "H", tipo_persona: "alumno" },
-    { _id: 2, nif: "89542419S", nombre: "Juan", apellido1: "Saez", apellido2: "Vega", ciudad: "Almería", direccion: "C/ Mercurio", telefono: "618253876", fecha_nacimiento: "1992-08-08", sexo: "H", tipo_persona: "alumno" },
-    { _id: 3, nif: "11105554G", nombre: "Zoe", apellido1: "Ramirez", apellido2: "Gea", ciudad: "Almería", direccion: "C/ Marte", telefono: "618223876", fecha_nacimiento: "1979-08-19", sexo: "M", tipo_persona: "profesor" },
-    { _id: 4, nif: "17105885A", nombre: "Pedro", apellido1: "Heller", apellido2: "Pagac", ciudad: "Almería", direccion: "C/ Estrella fugaz", telefono: null, fecha_nacimiento: "2000-10-05", sexo: "H", tipo_persona: "alumno" },
-    { _id: 5, nif: "38223286T", nombre: "David", apellido1: "Schmidt", apellido2: "Fisher", ciudad: "Almería", direccion: "C/ Venus", telefono: "678516294", fecha_nacimiento: "1978-01-19", sexo: "H", tipo_persona: "profesor" },
-    { _id: 6, nif: "04233869Y", nombre: "José", apellido1: "Koss", apellido2: "Bayer", ciudad: "Almería", direccion: "C/ Júpiter", telefono: "628349590", fecha_nacimiento: "1998-01-28", sexo: "H", tipo_persona: "alumno" },
-    { _id: 7, nif: "97258166K", nombre: "Ismael", apellido1: "Strosin", apellido2: "Turcotte", ciudad: "Almería", direccion: "C/ Neptuno", telefono: null, fecha_nacimiento: "1999-05-24", sexo: "H", tipo_persona: "alumno" },
-    { _id: 8, nif: "79503962T", nombre: "Cristina", apellido1: "Lemke", apellido2: "Rutherford", ciudad: "Almería", direccion: "C/ Saturno", telefono: "669162534", fecha_nacimiento: "1977-08-21", sexo: "M", tipo_persona: "profesor" },
-    { _id: 9, nif: "82842571K", nombre: "Ramón", apellido1: "Herzog", apellido2: "Tremblay", ciudad: "Almería", direccion: "C/ Urano", telefono: "626351429", fecha_nacimiento: "1996-11-21", sexo: "H", tipo_persona: "alumno" },
-    { _id: 10, nif: "61142000L", nombre: "Esther", apellido1: "Spencer", apellido2: "Lakin", ciudad: "Almería", direccion: "C/ Plutón", telefono: null, fecha_nacimiento: "1977-05-19", sexo: "M", tipo_persona: "profesor" }
+    { _id: 1, nif: "26902806M", nombre: "Salvador", apellido1: "Sánchez", apellido2: "Pérez", ciudad: "Almería", direccion: "C/ Real del barrio alto", telefono: "950254837", fecha_nacimiento: ISODate("1991-03-28T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
+    { _id: 2, nif: "89542419S", nombre: "Juan", apellido1: "Saez", apellido2: "Vega", ciudad: "Almería", direccion: "C/ Mercurio", telefono: "618253876", fecha_nacimiento: ISODate("1992-08-08T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
+    { _id: 3, nif: "11105554G", nombre: "Zoe", apellido1: "Ramirez", apellido2: "Gea", ciudad: "Almería", direccion: "C/ Marte", telefono: "618223876", fecha_nacimiento: ISODate("1979-08-19T00:00:00Z"), sexo: "M", tipo_persona: "profesor" },
+    { _id: 4, nif: "17105885A", nombre: "Pedro", apellido1: "Heller", apellido2: "Pagac", ciudad: "Almería", direccion: "C/ Estrella fugaz", telefono: null, fecha_nacimiento: ISODate("2000-10-05T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
+    { _id: 5, nif: "38223286T", nombre: "David", apellido1: "Schmidt", apellido2: "Fisher", ciudad: "Almería", direccion: "C/ Venus", telefono: "678516294", fecha_nacimiento: ISODate("1978-01-19T00:00:00Z"), sexo: "H", tipo_persona: "profesor" },
+    { _id: 6, nif: "04233869Y", nombre: "José", apellido1: "Koss", apellido2: "Bayer", ciudad: "Almería", direccion: "C/ Júpiter", telefono: "628349590", fecha_nacimiento: ISODate("1998-01-28T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
+    { _id: 7, nif: "97258166K", nombre: "Ismael", apellido1: "Strosin", apellido2: "Turcotte", ciudad: "Almería", direccion: "C/ Neptuno", telefono: null, fecha_nacimiento: ISODate("1999-05-24T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
+    { _id: 8, nif: "79503962T", nombre: "Cristina", apellido1: "Lemke", apellido2: "Rutherford", ciudad: "Almería", direccion: "C/ Saturno", telefono: "669162534", fecha_nacimiento: ISODate("1977-08-21T00:00:00Z"), sexo: "M", tipo_persona: "profesor" },
+    { _id: 9, nif: "82842571K", nombre: "Ramón", apellido1: "Herzog", apellido2: "Tremblay", ciudad: "Almería", direccion: "C/ Urano", telefono: "626351429", fecha_nacimiento: ISODate("1996-11-21T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
+    { _id: 10, nif: "61142000L", nombre: "Esther", apellido1: "Spencer", apellido2: "Lakin", ciudad: "Almería", direccion: "C/ Plutón", telefono: null, fecha_nacimiento: ISODate("1977-05-19T00:00:00Z"), sexo: "M", tipo_persona: "profesor" }
 ]);
+
 
 --matricula
 db.matricula.insertMany([
@@ -307,30 +344,31 @@ db.matricula.insertMany([
 
 --asignatura
 db.asignatura.insertMany([
-    { _id: 1, nombre_materia: "Álgegra lineal y matemática discreta", id_alumno: 6, id_profesor: 3, creditos: 3, tipo: "básica", cuatrimestre: 1 },
-    { _id: 2, nombre_materia: "Cálculo", id_alumno: 6, id_profesor: 3, creditos: 14, tipo: "básica", cuatrimestre: 2 },
-    { _id: 3, nombre_materia: "Física para informática", id_alumno: 6, id_profesor: 3, creditos: 3, tipo: "básica", cuatrimestre: 3 },
-    { _id: 4, nombre_materia: "Introducción a la programación", id_alumno: 6, id_profesor: 4, creditos: 14, tipo: "básica", cuatrimestre: 4 },
-    { _id: 5, nombre_materia: "Organización y gestión de empresas", id_alumno: 6, id_profesor: 5, creditos: 3, tipo: "básica", cuatrimestre: 1 },
-    { _id: 6, nombre_materia: "Estadística", id_alumno: 6, id_profesor: 6, creditos: 14, tipo: "básica", cuatrimestre: 2 },
-    { _id: 7, nombre_materia: "Estructura y tecnología de computadores", id_alumno: 6, id_profesor: 7, creditos: 3, tipo: "básica", cuatrimestre: 3 },
-    { _id: 8, nombre_materia: "Fundamentos de electrónica", id_alumno: 6, id_profesor: 8, creditos: 14, tipo: "básica", cuatrimestre: 4 },
-    { _id: 9, nombre_materia: "Lógica y algorítmica", id_alumno: 6, id_profesor: 9, creditos: 3, tipo: "básica", cuatrimestre: 1 },
-    { _id: 10, nombre_materia: "Metodología de la programación", id_alumno: 6, id_profesor: 10, creditos: 14, tipo: "básica", cuatrimestre: 2 }
+    { _id: 1, nombre_materia: "Álgegra lineal y matemática discreta", id_alumno: 6, id_profesor: 3, creditos: 3.0, tipo: "básica", cuatrimestre: 1 },
+    { _id: 2, nombre_materia: "Cálculo", id_alumno: 6, id_profesor: 3, creditos: 14.0, tipo: "básica", cuatrimestre: 2 },
+    { _id: 3, nombre_materia: "Física para informática", id_alumno: 6, id_profesor: 3, creditos: 3.0, tipo: "básica", cuatrimestre: 3 },
+    { _id: 4, nombre_materia: "Introducción a la programación", id_alumno: 6, id_profesor: 4, creditos: 14.0, tipo: "básica", cuatrimestre: 4 },
+    { _id: 5, nombre_materia: "Organización y gestión de empresas", id_alumno: 6, id_profesor: 5, creditos: 3.0, tipo: "básica", cuatrimestre: 1 },
+    { _id: 6, nombre_materia: "Estadística", id_alumno: 6, id_profesor: 6, creditos: 14.0, tipo: "básica", cuatrimestre: 2 },
+    { _id: 7, nombre_materia: "Estructura y tecnología de computadores", id_alumno: 6, id_profesor: 7, creditos: 3.0, tipo: "básica", cuatrimestre: 3 },
+    { _id: 8, nombre_materia: "Fundamentos de electrónica", id_alumno: 6, id_profesor: 8, creditos: 14.0, tipo: "básica", cuatrimestre: 4 },
+    { _id: 9, nombre_materia: "Lógica y algorítmica", id_alumno: 6, id_profesor: 9, creditos: 3.0, tipo: "básica", cuatrimestre: 1 },
+    { _id: 10, nombre_materia: "Metodología de la programación", id_alumno: 6, id_profesor: 10, creditos: 14.0, tipo: "básica", cuatrimestre: 2 }
 ]);
 
 --departamento
 db.departamento.insertMany([
-    { _id: 1, nombre: "Informática" },
-    { _id: 2, nombre: "Matemáticas" },
-    { _id: 3, nombre: "Economía y Empresa" },
-    { _id: 4, nombre: "Educación" },
-    { _id: 5, nombre: "Agronomía" },
-    { _id: 6, nombre: "Química y Física" },
-    { _id: 7, nombre: "Filología" },
-    { _id: 8, nombre: "Derecho" },
-    { _id: 9, nombre: "Biología y Geología" }
+    { _id: 1, id_persona: 1, nombre: "Informática" },
+    { _id: 2, id_persona: 2, nombre: "Matemáticas" },
+    { _id: 3, id_persona: 3, nombre: "Economía y Empresa" },
+    { _id: 4, id_persona: 4, nombre: "Educación" },
+    { _id: 5, id_persona: 5, nombre: "Agronomía" },
+    { _id: 6, id_persona: 6, nombre: "Química y Física" },
+    { _id: 7, id_persona: 7, nombre: "Filología" },
+    { _id: 8, id_persona: 8, nombre: "Derecho" },
+    { _id: 9, id_persona: 9, nombre: "Biología y Geología" }
 ]);
+
 
 --grado
 db.grado.insertMany([
