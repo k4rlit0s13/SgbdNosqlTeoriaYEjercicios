@@ -1,7 +1,6 @@
--- Crear tabla `persona`
 CREATE TABLE persona (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nif VARCHAR(9) UNIQUE,
+    nif VARCHAR(9) UNIQUE NOT NULL,
     nombre VARCHAR(25) NOT NULL,
     apellido1 VARCHAR(50) NOT NULL,
     apellido2 VARCHAR(50),
@@ -10,8 +9,11 @@ CREATE TABLE persona (
     telefono VARCHAR(9),
     fecha_nacimiento DATE NOT NULL,
     sexo ENUM('H', 'M') NOT NULL,
-    tipo_persona ENUM('profesor', 'alumno') NOT NULL
+    tipo_persona ENUM('profesor', 'alumno') NOT NULL,
+    id_grado INT,
+    FOREIGN KEY (id_grado) REFERENCES grado(id)  
 );
+
 
 -- Crear tabla `matricula`
 CREATE TABLE matricula (
@@ -55,16 +57,16 @@ CREATE TABLE grado (
 
 
 -- Crear tabla `persona`
-INSERT INTO persona VALUES (1, '26902806M', 'Salvador', 'Sánchez', 'Pérez', 'Almería', 'C/ Real del barrio alto', '950254837', '1991-03-28', 'H', 'alumno');
-INSERT INTO persona VALUES (2, '89542419S', 'Juan', 'Saez', 'Vega', 'Almería', 'C/ Mercurio', '618253876', '1992-08-08', 'H', 'alumno');
-INSERT INTO persona VALUES (3, '11105554G', 'Zoe', 'Ramirez', 'Gea', 'Almería', 'C/ Marte', '618223876', '1979-08-19', 'M', 'profesor');
-INSERT INTO persona VALUES (4, '17105885A', 'Pedro', 'Heller', 'Pagac', 'Almería', 'C/ Estrella fugaz', NULL, '2000-10-05', 'H', 'alumno');
-INSERT INTO persona VALUES (5, '38223286T', 'David', 'Schmidt', 'Fisher', 'Almería', 'C/ Venus', '678516294', '1978-01-19', 'H', 'profesor');
-INSERT INTO persona VALUES (6, '04233869Y', 'José', 'Koss', 'Bayer', 'Almería', 'C/ Júpiter', '628349590', '1998-01-28', 'H', 'alumno');
-INSERT INTO persona VALUES (7, '97258166K', 'Ismael', 'Strosin', 'Turcotte', 'Almería', 'C/ Neptuno', NULL, '1999-05-24', 'H', 'alumno');
-INSERT INTO persona VALUES (8, '79503962T', 'Cristina', 'Lemke', 'Rutherford', 'Almería', 'C/ Saturno', '669162534', '1977-08-21', 'M', 'profesor');
-INSERT INTO persona VALUES (9, '82842571K', 'Ramón', 'Herzog', 'Tremblay', 'Almería', 'C/ Urano', '626351429', '1996-11-21', 'H', 'alumno');
-INSERT INTO persona VALUES (10, '61142000L', 'Esther', 'Spencer', 'Lakin', 'Almería', 'C/ Plutón', NULL, '1977-05-19', 'M', 'profesor');
+INSERT INTO persona VALUES (1, '26902806M', 'Salvador', 'Sánchez', 'Pérez', 'Almería', 'C/ Real del barrio alto', '950254837', '1991-03-28', 'H', 'alumno', 4),
+INSERT INTO persona VALUES (2, '89542419S', 'Juan', 'Saez', 'Vega', 'Almería', 'C/ Mercurio', '618253876', '1992-08-08', 'H', 'alumno', 3),
+INSERT INTO persona VALUES (3, '11105554G', 'Zoe', 'Ramirez', 'Gea', 'Almería', 'C/ Marte', '618223876', '1979-08-19', 'M', 'profesor', 1),
+INSERT INTO persona VALUES (4, '17105885A', 'Pedro', 'Heller', 'Pagac', 'Almería', 'C/ Estrella fugaz', NULL, '2000-10-05', 'H', 'alumno', 4),
+INSERT INTO persona VALUES (5, '38223286T', 'David', 'Schmidt', 'Fisher', 'Almería', 'C/ Venus', '678516294', '1978-01-19', 'H', 'profesor', 5),
+INSERT INTO persona VALUES (6, '04233869Y', 'José', 'Koss', 'Bayer', 'Almería', 'C/ Júpiter', '628349590', '1998-01-28', 'H', 'alumno', 7),
+INSERT INTO persona VALUES (7, '97258166K', 'Ismael', 'Strosin', 'Turcotte', 'Almería', 'C/ Neptuno', NULL, '1999-05-24', 'H', 'alumno', 4),
+INSERT INTO persona VALUES (8, '79503962T', 'Cristina', 'Lemke', 'Rutherford', 'Almería', 'C/ Saturno', '669162534', '1977-08-21', 'M', 'profesor', 2),
+INSERT INTO persona VALUES (9, '82842571K', 'Ramón', 'Herzog', 'Tremblay', 'Almería', 'C/ Urano', '626351429', '1996-11-21', 'H', 'alumno', 6),
+INSERT INTO persona VALUES (10, '61142000L', 'Esther', 'Spencer', 'Lakin', 'Almería', 'C/ Plutón', NULL, '1977-05-19', 'M', 'profesor', 9);
 
 -- Crear tabla `matricula`
 INSERT INTO matricula VALUES (1, 1, 2014, 2015);
@@ -122,6 +124,7 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
 --VALIDATIONS
 
 --persona
+
 {
   $jsonSchema: {
     bsonType: 'object',
@@ -183,10 +186,15 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
           'alumno'
         ],
         description: 'Debe ser uno de los valores: \'profesor\' o \'alumno\'.'
+      },
+      id_grado: {
+        bsonType: ['int', 'null'],
+        description: 'Debe ser un valor entero que representa la referencia al grado o null si no está asignado.'
       }
     }
   }
 }
+
 
 --matricula
   {
@@ -224,7 +232,8 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
       'id_profesor',
       'creditos',
       'tipo',
-      'cuatrimestre'
+      'cuatrimestre',
+      'id_grado'
     ],
     properties: {
       nombre_materia: {
@@ -241,7 +250,10 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
         description: 'Debe ser un número entero que referencia un documento en la colección persona.'
       },
       creditos: {
-        bsonType: ['double', 'int'],  // Permitir tanto double como int
+        bsonType: [
+          'double',
+          'int'
+        ],
         description: 'Debe ser un número decimal o entero positivo.',
         minimum: 0
       },
@@ -258,11 +270,14 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
         bsonType: 'int',
         description: 'Debe ser un número entero positivo que indica el cuatrimestre.',
         minimum: 1
+      },
+      id_grado: {
+        bsonType: 'int',
+        description: 'Debe ser un número entero positivo que indica el grado.'
       }
     }
   }
 }
-
 
 
 
@@ -315,16 +330,16 @@ INSERT INTO grado VALUES (10, 5, 'Grado en Química (Plan 2009)');
 --INSERT INTOS
 
 db.persona.insertMany([
-    { _id: 1, nif: "26902806M", nombre: "Salvador", apellido1: "Sánchez", apellido2: "Pérez", ciudad: "Almería", direccion: "C/ Real del barrio alto", telefono: "950254837", fecha_nacimiento: ISODate("1991-03-28T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
-    { _id: 2, nif: "89542419S", nombre: "Juan", apellido1: "Saez", apellido2: "Vega", ciudad: "Almería", direccion: "C/ Mercurio", telefono: "618253876", fecha_nacimiento: ISODate("1992-08-08T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
-    { _id: 3, nif: "11105554G", nombre: "Zoe", apellido1: "Ramirez", apellido2: "Gea", ciudad: "Almería", direccion: "C/ Marte", telefono: "618223876", fecha_nacimiento: ISODate("1979-08-19T00:00:00Z"), sexo: "M", tipo_persona: "profesor" },
-    { _id: 4, nif: "17105885A", nombre: "Pedro", apellido1: "Heller", apellido2: "Pagac", ciudad: "Almería", direccion: "C/ Estrella fugaz", telefono: null, fecha_nacimiento: ISODate("2000-10-05T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
-    { _id: 5, nif: "38223286T", nombre: "David", apellido1: "Schmidt", apellido2: "Fisher", ciudad: "Almería", direccion: "C/ Venus", telefono: "678516294", fecha_nacimiento: ISODate("1978-01-19T00:00:00Z"), sexo: "H", tipo_persona: "profesor" },
-    { _id: 6, nif: "04233869Y", nombre: "José", apellido1: "Koss", apellido2: "Bayer", ciudad: "Almería", direccion: "C/ Júpiter", telefono: "628349590", fecha_nacimiento: ISODate("1998-01-28T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
-    { _id: 7, nif: "97258166K", nombre: "Ismael", apellido1: "Strosin", apellido2: "Turcotte", ciudad: "Almería", direccion: "C/ Neptuno", telefono: null, fecha_nacimiento: ISODate("1999-05-24T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
-    { _id: 8, nif: "79503962T", nombre: "Cristina", apellido1: "Lemke", apellido2: "Rutherford", ciudad: "Almería", direccion: "C/ Saturno", telefono: "669162534", fecha_nacimiento: ISODate("1977-08-21T00:00:00Z"), sexo: "M", tipo_persona: "profesor" },
-    { _id: 9, nif: "82842571K", nombre: "Ramón", apellido1: "Herzog", apellido2: "Tremblay", ciudad: "Almería", direccion: "C/ Urano", telefono: "626351429", fecha_nacimiento: ISODate("1996-11-21T00:00:00Z"), sexo: "H", tipo_persona: "alumno" },
-    { _id: 10, nif: "61142000L", nombre: "Esther", apellido1: "Spencer", apellido2: "Lakin", ciudad: "Almería", direccion: "C/ Plutón", telefono: null, fecha_nacimiento: ISODate("1977-05-19T00:00:00Z"), sexo: "M", tipo_persona: "profesor" }
+    { _id: 1, nif: "26902806M", nombre: "Salvador", apellido1: "Sánchez", apellido2: "Pérez", ciudad: "Almería", direccion: "C/ Real del barrio alto", telefono: "950254837", fecha_nacimiento: ISODate("1991-03-28T00:00:00Z"), sexo: "H", tipo_persona: "alumno", id_grado: 4 },
+    { _id: 2, nif: "89542419S", nombre: "Juan", apellido1: "Saez", apellido2: "Vega", ciudad: "Almería", direccion: "C/ Mercurio", telefono: "618253876", fecha_nacimiento: ISODate("1992-08-08T00:00:00Z"), sexo: "H", tipo_persona: "alumno", id_grado: 3 },
+    { _id: 3, nif: "11105554G", nombre: "Zoe", apellido1: "Ramirez", apellido2: "Gea", ciudad: "Almería", direccion: "C/ Marte", telefono: "618223876", fecha_nacimiento: ISODate("1979-08-19T00:00:00Z"), sexo: "M", tipo_persona: "profesor", id_grado: 1 },
+    { _id: 4, nif: "17105885A", nombre: "Pedro", apellido1: "Heller", apellido2: "Pagac", ciudad: "Almería", direccion: "C/ Estrella fugaz", telefono: null, fecha_nacimiento: ISODate("2000-10-05T00:00:00Z"), sexo: "H", tipo_persona: "alumno", id_grado: 4 },
+    { _id: 5, nif: "38223286T", nombre: "David", apellido1: "Schmidt", apellido2: "Fisher", ciudad: "Almería", direccion: "C/ Venus", telefono: "678516294", fecha_nacimiento: ISODate("1978-01-19T00:00:00Z"), sexo: "H", tipo_persona: "profesor", id_grado: 5 },
+    { _id: 6, nif: "04233869Y", nombre: "José", apellido1: "Koss", apellido2: "Bayer", ciudad: "Almería", direccion: "C/ Júpiter", telefono: "628349590", fecha_nacimiento: ISODate("1998-01-28T00:00:00Z"), sexo: "H", tipo_persona: "alumno", id_grado: 7 },
+    { _id: 7, nif: "97258166K", nombre: "Ismael", apellido1: "Strosin", apellido2: "Turcotte", ciudad: "Almería", direccion: "C/ Neptuno", telefono: null, fecha_nacimiento: ISODate("1999-05-24T00:00:00Z"), sexo: "H", tipo_persona: "alumno", id_grado: 4 },
+    { _id: 8, nif: "79503962T", nombre: "Cristina", apellido1: "Lemke", apellido2: "Rutherford", ciudad: "Almería", direccion: "C/ Saturno", telefono: "669162534", fecha_nacimiento: ISODate("1977-08-21T00:00:00Z"), sexo: "M", tipo_persona: "profesor", id_grado: 2 },
+    { _id: 9, nif: "82842571K", nombre: "Ramón", apellido1: "Herzog", apellido2: "Tremblay", ciudad: "Almería", direccion: "C/ Urano", telefono: "626351429", fecha_nacimiento: ISODate("1996-11-21T00:00:00Z"), sexo: "H", tipo_persona: "alumno", id_grado: 6 },
+    { _id: 10, nif: "61142000L", nombre: "Esther", apellido1: "Spencer", apellido2: "Lakin", ciudad: "Almería", direccion: "C/ Plutón", telefono: null, fecha_nacimiento: ISODate("1977-05-19T00:00:00Z"), sexo: "M", tipo_persona: "profesor", id_grado: 9 }
 ]);
 
 
@@ -344,16 +359,16 @@ db.matricula.insertMany([
 
 --asignatura
 db.asignatura.insertMany([
-    { _id: 1, nombre_materia: "Álgegra lineal y matemática discreta", id_alumno: 6, id_profesor: 3, creditos: 3.0, tipo: "básica", cuatrimestre: 1 },
-    { _id: 2, nombre_materia: "Cálculo", id_alumno: 6, id_profesor: 3, creditos: 14.0, tipo: "básica", cuatrimestre: 2 },
-    { _id: 3, nombre_materia: "Física para informática", id_alumno: 6, id_profesor: 3, creditos: 3.0, tipo: "básica", cuatrimestre: 3 },
-    { _id: 4, nombre_materia: "Introducción a la programación", id_alumno: 6, id_profesor: 4, creditos: 14.0, tipo: "básica", cuatrimestre: 4 },
-    { _id: 5, nombre_materia: "Organización y gestión de empresas", id_alumno: 6, id_profesor: 5, creditos: 3.0, tipo: "básica", cuatrimestre: 1 },
-    { _id: 6, nombre_materia: "Estadística", id_alumno: 6, id_profesor: 6, creditos: 14.0, tipo: "básica", cuatrimestre: 2 },
-    { _id: 7, nombre_materia: "Estructura y tecnología de computadores", id_alumno: 6, id_profesor: 7, creditos: 3.0, tipo: "básica", cuatrimestre: 3 },
-    { _id: 8, nombre_materia: "Fundamentos de electrónica", id_alumno: 6, id_profesor: 8, creditos: 14.0, tipo: "básica", cuatrimestre: 4 },
-    { _id: 9, nombre_materia: "Lógica y algorítmica", id_alumno: 6, id_profesor: 9, creditos: 3.0, tipo: "básica", cuatrimestre: 1 },
-    { _id: 10, nombre_materia: "Metodología de la programación", id_alumno: 6, id_profesor: 10, creditos: 14.0, tipo: "básica", cuatrimestre: 2 }
+    { _id: 1, nombre_materia: "Álgegra lineal y matemática discreta", id_alumno: 1, id_profesor: 3, creditos: 3.0, tipo: "básica", cuatrimestre: 1, id_grado: 4 },
+    { _id: 2, nombre_materia: "Cálculo", id_alumno: 2, id_profesor: 3, creditos: 14.0, tipo: "básica", cuatrimestre: 2, id_grado: 4 },
+    { _id: 3, nombre_materia: "Física para informática", id_alumno: 4, id_profesor: 3, creditos: 3.0, tipo: "básica", cuatrimestre: 3, id_grado: 4 },
+    { _id: 4, nombre_materia: "Introducción a la programación", id_alumno: 6, id_profesor: 4, creditos: 14.0, tipo: "básica", cuatrimestre: 4, id_grado: 4 },
+    { _id: 5, nombre_materia: "Organización y gestión de empresas", id_alumno: 7, id_profesor: 5, creditos: 3.0, tipo: "básica", cuatrimestre: 1, id_grado: 5 },
+    { _id: 6, nombre_materia: "Estadística", id_alumno: 9, id_profesor: 6, creditos: 14.0, tipo: "básica", cuatrimestre: 2, id_grado: 9 },
+    { _id: 7, nombre_materia: "Estructura y tecnología de computadores", id_alumno: 6, id_profesor: 7, creditos: 3.0, tipo: "básica", cuatrimestre: 3, id_grado: 4 },
+    { _id: 8, nombre_materia: "Fundamentos de electrónica", id_alumno: 1, id_profesor: 8, creditos: 14.0, tipo: "básica", cuatrimestre: 4, id_grado: 4 },
+    { _id: 9, nombre_materia: "Lógica y algorítmica", id_alumno: 2, id_profesor: 9, creditos: 3.0, tipo: "básica", cuatrimestre: 1, id_grado: 4 },
+    { _id: 10, nombre_materia: "Metodología de la programación", id_alumno: 9, id_profesor: 10, creditos: 14.0, tipo: "básica", cuatrimestre: 2, id_grado: 4 }
 ]);
 
 --departamento
@@ -373,15 +388,15 @@ db.departamento.insertMany([
 --grado
 db.grado.insertMany([
     { _id: 1, id_departamento: 5, nombre_grado: "Grado en Ingeniería Agrícola (Plan 2015)" },
-    { _id: 2, id_departamento: 5, nombre_grado: "Grado en Ingeniería Eléctrica (Plan 2014)" },
-    { _id: 3, id_departamento: 5, nombre_grado: "Grado en Ingeniería Electrónica Industrial (Plan 2010)" },
-    { _id: 4, id_departamento: 5, nombre_grado: "Grado en Ingeniería Informática (Plan 2015)" },
-    { _id: 5, id_departamento: 5, nombre_grado: "Grado en Ingeniería Mecánica (Plan 2010)" },
+    { _id: 2, id_departamento: 1, nombre_grado: "Grado en Ingeniería Eléctrica (Plan 2014)" },
+    { _id: 3, id_departamento: 2, nombre_grado: "Grado en Ingeniería Electrónica Industrial (Plan 2010)" },
+    { _id: 4, id_departamento: 3, nombre_grado: "Grado en Ingeniería Informática (Plan 2015)" },
+    { _id: 5, id_departamento: 4, nombre_grado: "Grado en Ingeniería Mecánica (Plan 2010)" },
     { _id: 6, id_departamento: 5, nombre_grado: "Grado en Ingeniería Química Industrial (Plan 2010)" },
-    { _id: 7, id_departamento: 5, nombre_grado: "Grado en Biotecnología (Plan 2015)" },
-    { _id: 8, id_departamento: 5, nombre_grado: "Grado en Ciencias Ambientales (Plan 2009)" },
-    { _id: 9, id_departamento: 5, nombre_grado: "Grado en Matemáticas (Plan 2010)" },
-    { _id: 10, id_departamento: 5, nombre_grado: "Grado en Química (Plan 2009)" }
+    { _id: 7, id_departamento: 6, nombre_grado: "Grado en Biotecnología (Plan 2015)" },
+    { _id: 8, id_departamento: 7, nombre_grado: "Grado en Ciencias Ambientales (Plan 2009)" },
+    { _id: 9, id_departamento: 8, nombre_grado: "Grado en Matemáticas (Plan 2010)" },
+    { _id: 10, id_departamento: 9, nombre_grado: "Grado en Química (Plan 2009)" }
 ]);
 
 
