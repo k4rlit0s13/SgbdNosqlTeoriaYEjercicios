@@ -187,41 +187,164 @@ Resuelva todas las consultas utilizando las cláusulas `LEFT JOIN` y `RIGHT JOIN
   
 --2. Devuelve un listado con los profesores que no están asociados a un departamento.
  
-  db.persona.aggregate([
+    db.persona.aggregate([
+      {
+        $lookup: {
+          from: "departamento",
+          localField: "_id",
+          foreignField: "id_persona",
+          as: "departamento"
+        }
+      },
+      {
+        $match: {
+          "departamento": { $eq: [] }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          nombre: 1,
+          apellido1: 1,
+          apellido2: 1
+        }
+      }
+    ]);
+
+--3. Devuelve un listado con los departamentos que no tienen profesores asociados.
+
+  db.departamento.aggregate([
+    {
+      $lookup: {
+        from: "persona",
+        localField: "id_persona",
+        foreignField: "_id",
+        as: "personas"
+      }
+    },
+    {
+      $match: {
+        "personas.tipo_persona": {$ne:"profesor"}
+      }
+    },
+    {
+      $group: {
+        _id: "$_id",
+        nombre: { $first: "$nombre" }
+      }
+    }
+  ]).sort({_id:1}).toArray()
+
+  
+--4. Devuelve un listado con los profesores que no imparten ninguna asignatura.
+
+    db.persona.aggregate([
+      {
+        $match: {
+          tipo_persona: "profesor"
+        }
+      },
+      {
+        $lookup: {
+          from: "asignatura",
+          localField: "_id",
+          foreignField: "id_profesor",
+          as: "asignaturas"
+        }
+      },
+      {
+        $match: {
+          "asignaturas": { $eq: [] }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          nombre: 1,
+          apellido1: 1,
+          apellido2: 1
+        }
+      }
+    ]).sort({nombre:1}).toArray();
+
+
+--5. Devuelve un listado con las asignaturas que no tienen un profesor asignado.
+
+    db.asignatura.aggregate([
+      {
+        $lookup: {
+          from: "persona",
+          localField: "id_profesor",
+          foreignField: "_id",
+          as: "profesor"
+        }
+      },
+      {
+        $match: {
+          "profesor._id": { $exists: false }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          nombre_materia: 1
+        }
+      }
+    ]).toArray();
+
+
+--6. Devuelve un listado con todos los departamentos que tienen alguna asignatura que no se haya impartido en ningún curso escolar. El resultado debe mostrar el nombre del departamento y el nombre de la asignatura que no se haya impartido nunca.
+
+db.departamento.aggregate([
   {
     $lookup: {
-      from: "departamento",
+      from: "asignatura",
       localField: "_id",
-      foreignField: "id_persona",
-      as: "departamento"
+      foreignField: "id_departamento",
+      as: "asignaturas"
+    }
+  },
+  {
+    $lookup: {
+      from: "curso_escolar",
+      localField: "asignaturas._id",
+      foreignField: "id_asignatura",
+      as: "asignaturas_curso"
+    }
+  },
+  {
+    $addFields: {
+      asignatura_has_curso: {
+        $cond: {
+          if: { $eq: [ { $size: "$asignaturas_curso" }, 0 ] },
+          then: true,
+          else: false
+        }
+      }
     }
   },
   {
     $match: {
-      "departamento": { $eq: [] }
+      asignatura_has_curso: true
     }
   },
   {
     $project: {
       _id: 0,
-      nombre: 1,
-      apellido1: 1,
-      apellido2: 1
+      nombre_departamento: "$nombre",
+      nombre_asignatura: "$asignaturas.nombre_materia"
     }
   }
-]);
-
---3. Devuelve un listado con los departamentos que no tienen profesores asociados.
+]).toArray();
 
 
-  
-4. Devuelve un listado con los profesores que no imparten ninguna asignatura.
-5. Devuelve un listado con las asignaturas que no tienen un profesor asignado.
-6. Devuelve un listado con todos los departamentos que tienen alguna asignatura que no se haya impartido en ningún curso escolar. El resultado debe mostrar el nombre del departamento y el nombre de la asignatura que no se haya impartido nunca.
 
 ### 4. Consultas resumen
 
-1. Devuelve el número total de **alumnas** que hay.
+--1. Devuelve el número total de **alumnas** que hay.
+
+  db.persona.find({tipo_persona:"alumno",sexo:"M"},{_id:1,nombre:1,apellido1:1}).sort({nombre:1}).toArray()
+
 2. Calcula cuántos alumnos nacieron en `1999`.
 3. Calcula cuántos profesores hay en cada departamento. El resultado sólo debe mostrar dos columnas, una con el nombre del departamento y otra con el número de profesores que hay en ese departamento. El resultado sólo debe incluir los departamentos que tienen profesores asociados y deberá estar ordenado de mayor a menor por el número de profesores.
 4. Devuelve un listado con todos los departamentos y el número de profesores que hay en cada uno de ellos. Tenga en cuenta que pueden existir departamentos que no tienen profesores asociados. Estos departamentos también tienen que aparecer en el listado.

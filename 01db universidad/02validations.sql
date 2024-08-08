@@ -331,49 +331,58 @@
   $jsonSchema: {
     bsonType: 'object',
     required: [
-      '_id',
-      'nombre',
+      'nombre_materia',
       'id_alumno',
       'id_profesor',
       'creditos',
       'tipo',
-      'cuatrimestre'
+      'cuatrimestre',
+      'id_grado'
     ],
     properties: {
-      _id: {
-        bsonType: 'objectId',
-        description: 'El id es de tipo ObjectId.'
-      },
-      nombre: {
+      nombre_materia: {
         bsonType: 'string',
-        description: 'El nombre debe ser una cadena de texto.'
+        description: 'Debe ser una cadena de texto no vacía y no mayor de 100 caracteres.',
+        maxLength: 100
       },
       id_alumno: {
-        bsonType: 'objectId',
-        description: 'id_alumno es de tipo ObjectId.'
+        bsonType: 'int',
+        description: 'Debe ser un número entero que referencia un documento en la colección persona.'
       },
       id_profesor: {
-        bsonType: 'objectId',
-        description: 'id_profesor es de tipo ObjectId.'
+        bsonType: [
+          'int',
+          'null'
+        ],
+        description: 'Debe ser un número entero que referencia un documento en la colección persona.'
       },
       creditos: {
-        bsonType: 'int',
-        description: 'El número de créditos debe ser un entero.'
+        bsonType: [
+          'double',
+          'int'
+        ],
+        description: 'Debe ser un número decimal o entero positivo.',
+        minimum: 0
       },
       tipo: {
         bsonType: 'string',
         'enum': [
-          'a',
-          'b'
+          'básica',
+          'obligatoria',
+          'optativa'
         ],
-        description: 'El tipo debe ser una cadena de texto y uno de los valores permitidos: \'a\' o \'b\'.'
+        description: 'Debe ser uno de los valores: \'básica\', \'obligatoria\' o \'optativa\'.'
       },
       cuatrimestre: {
         bsonType: 'int',
-        description: 'El cuatrimestre debe ser un entero.'
+        description: 'Debe ser un número entero positivo que indica el cuatrimestre.',
+        minimum: 1
+      },
+      id_grado: {
+        bsonType: 'int',
+        description: 'Debe ser un número entero positivo que indica el grado.'
       }
-    },
-    additionalProperties: false
+    }
   }
 }
 
